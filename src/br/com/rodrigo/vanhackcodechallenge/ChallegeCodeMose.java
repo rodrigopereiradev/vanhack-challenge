@@ -22,8 +22,6 @@ public class ChallegeCodeMose {
 
     private static void setPossibilities(String signals, ArrayList<String> possibilities, Map<String, String> morse) {
 
-        var countUnknownChars = getCountOfUnknownChars(signals.toCharArray());
-
         // run via morse codes that exists
         for (var entry : morse.entrySet()) {
 
@@ -32,10 +30,10 @@ public class ChallegeCodeMose {
             }
 
             // If the length of signals and morse code are equals, it means that may exist compatibility between them.
-            if (countUnknownChars > 0 && signals.length() == entry.getValue().length()) {
+            if (signals.contains("?") && signals.length() == entry.getValue().length()) {
                 var tmpSignal = signals; // A temporary signals to receive morse code compatible
-                tmpSignal = getcompatibleValue(signals, entry.getValue(), tmpSignal.indexOf('?'));
 
+                tmpSignal = getcompatibleValue(signals, entry.getValue(), tmpSignal.indexOf('?'));
 
                 if (tmpSignal.equals(entry.getValue()))
                     possibilities.add(entry.getKey());
@@ -44,18 +42,6 @@ public class ChallegeCodeMose {
 
         }
 
-    }
-
-    // This method retrieve the quantity of chars '?' that exists in the array
-    private static int getCountOfUnknownChars(char[] charArr) {
-        var countUnknownChars  = 0;
-
-        for (char c : charArr) {
-            if (c == '?')
-                countUnknownChars++;
-        }
-
-        return countUnknownChars;
     }
 
     // This method retrieve the morse code compatible with the signals. It will run while unknown chars exists.
